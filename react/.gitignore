@@ -2,3 +2,4 @@
 node_modules/
 react_basics.js
 react_no_obs.js
+.gitignore

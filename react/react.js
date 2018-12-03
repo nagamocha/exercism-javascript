@@ -6,52 +6,65 @@ export
 class InputCell{
     constructor(value){
         this.value = value;
-        this.observers = [];
+        this.subscribers = new Set()
     }
 
     setValue(value){
         this.value = value;
-        this.observers.forEach(c => c.update())
+        this.subscribers.forEach( cell => cell.notify(this))
     }
 
-    addObserver(cell){
-        this.observers.push(cell)
+    addSubscriber(cell){
+        this.subscribers.add(cell)
     }
-
 }
 
 
 
-export class ComputeCell{
-    constructor(cells, callback){
-        cells.forEach( c => c.addObserver(this));
-
-        this.value = callback(cells);
+export
+class ComputeCell{
+    constructor(cells, compute){
         this.cells = cells;
-        this.mycallback = callback;
-        this.observers = [];
-        this.callbacks = []
-
+        this.compute = compute
+        this.curr = this.compute(cells)
+        this.cache = cells.map(cell => {value: cell.value, cell: cell});
+        for (let cell of cells){
+            this.cache 
+        }
+        this.cells = cells;
+        this.subscribers = new Set()
     }
 
-    update(){
-        this.value = this.mycallback(this.cells)
-        this.observers.forEach(c => c.update())
+    get value(){
+        return this.curr
     }
 
-    addObserver(cell){
-        this.observers.push(cell)
+    probe(cell){
+        if (cell.value != cache[cell]){
+            cache[cell] = cell.value
+            return [true, newVal]
+        }else{
+            return [false, null]
+        }
     }
 
-    addCallback(callback){
-        this.callbacks.push(callback)
+    notify(from){
+        //before updating value, probe other dependencies to check if they have changed too
+        thi
+
+        //if they have changed
+        this.curr = this.compute(this.cells)
+
+        //check if my value changes, if not, no need to notify subscribers
+        this.subscribers.forEach(cell => cell.notify(this))
     }
 
+    addSubscriber(cell){
+        this.subscribers.add(cell)
+    }
 }
 
-export class CallbackCell{
-    constructor(callback){
-        this.callback = callback;
-        this.values = []
-    }
+export
+class CallbackCell{
+
 }

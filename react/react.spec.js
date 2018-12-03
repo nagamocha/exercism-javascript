@@ -1,4 +1,4 @@
-import { InputCell, ComputeCell, CallbackCell } from './react_no_obs';
+import { InputCell, ComputeCell, CallbackCell } from './react';
 
 describe('React module', () => {
     //1
